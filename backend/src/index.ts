@@ -1,61 +1,23 @@
 import { Hono } from 'hono'
 
-
-import { PrismaClient } from '@prisma/client/edge'
-import { withAccelerate } from '@prisma/extension-accelerate'
-
-
+import {userRouter} from "./routes/user"
+import {blogRouter} from "./routes/blog"
 
 const app = new Hono<{
-	Bindings: {
-		DATABASE_URL: string
-	}
+  Bindings: {
+    DATABASE_URL: string
+    JWT_SECRET: string
+  }
 }>();
 
+app.route("/api/v1/user",userRouter);
+app.route("/api/v1/blog",blogRouter)
 
 
-app.post('/api/v1/signup', async(c) => {
- 
- 
-  const prisma = new PrismaClient({
-		datasourceUrl: c.env.DATABASE_URL,
-	}).$extends(withAccelerate());
-  const body = await c.req.json(); // to get body 
-  try{
-    const user=await prisma.user.create({
-      data:{
-        email:body.email,
-        password:body.password
-      }
-    })
-    return c.text("cekjsrdfvj");
-  }
-  catch(e)
-  {
-    console.log("error")
-  }
+app.get('/', (c) => {
+  return c.text('Hello from here! testing and debuging');
+});
 
+export default app;
 
-})
-
-app.post('/api/v1/signin', (c) => {
-  return c.body("Hello from here !!")
-})
-app.post('/api/v1/blog', (c) => {
-  return c.body("Hello from here !!")
-})
-app.put('/api/v1/blog', (c) => {
-  return c.body("Hello from here !!")
-})
-app.get('/api/v1/blog/:id', (c) => {
-  const id = c.req.param('id')
-	console.log(id);
-	return c.text('get blog route')
-})
-
-export default app
-
-
-
-
-
+// postgresql://learn_owner:POe6ULl1KkEp@ep-divine-hall-a1k1i6oa-pooler.ap-southeast-1.aws.neon.tech/learn?sslmode=require

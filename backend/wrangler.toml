@@ -9,5 +9,8 @@ compatibility_date = "2025-02-03"
 # Environment variables (don't expose secrets here)
 DATABASE_URL = "prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiMDNkZDY3NWYtNzY3Yy00YTUzLTg4NzYtM2UwMzNmMDMwMzE3IiwidGVuYW50X2lkIjoiOWM2YzFhZGUyMWJlYWI3OTJlMWM5ODQxNGI0MzU5YmQzMjJlZDMxMWQwMzU3ZDM2OGQ1Mjc5ZGMxYjhiYTYxOCIsImludGVybmFsX3NlY3JldCI6Ijk0ZDk3ZWE5LWQ4YmUtNGVhNy1iMGU1LTExNWY3Zjc1MDdhZCJ9.nKbFQxuI58OUBo1uBb8dslMNZlWiEgxdqvUKqtF87xo"
 
+
+JWT_SECRET = "jnklerwbvjk"
+
 # Optional settings (adjust as needed)
 workers_dev = true  # Enables Cloudflare Workers Dev mode
