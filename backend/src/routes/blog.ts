@@ -146,21 +146,30 @@ blogRouter.get('/:id',async (c) => {
     }
 
 });
-blogRouter.get('/bulk', async(c) => {
+blogRouter.get('/bulk', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
 
-
     try {
-        const blogs = await prisma.blog.findMany(); // Await the promise
-        return c.json({ blogs });
+        const blogs = await prisma.blog.findMany({
+            select: {
+                id: true,
+                title: true,
+                content: true,
+                author: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
+        });
+
+        return c.json(blogs); // ✅ Return an array directly
     } catch (e) {
         console.error('Error:', e);
         return c.json({ error: 'Internal Server Error' }, 500);
     }
-
- 
 });
 
 
