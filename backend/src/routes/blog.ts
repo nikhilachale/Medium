@@ -188,5 +188,20 @@ blogRouter.get('/:id',async (c) => {
 
 });
 
+blogRouter.delete('/', async (c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
 
-  
+    try {
+        // Delete all blogs where "published" is false
+        const deletedBlogs = await prisma.blog.deleteMany({
+            where: { published: false }
+        });
+
+        return c.json({ message: "Unpublished blogs deleted!", count: deletedBlogs.count });
+    } catch (e) {
+        console.error("Error deleting blogs:", e);
+        return c.json({ error: "Internal Server Error" }, 500);
+    }
+});

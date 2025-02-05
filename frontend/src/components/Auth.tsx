@@ -38,6 +38,7 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
             {type === "signup" && (
                 <LabelInput
                     label="Name"
+                    inputType="text"
                     placeholder="nikhilachale"
                     onChange={(e) => setPostInputs(c => ({ ...c, name: e.target.value }))}
                 />
@@ -45,12 +46,14 @@ const Auth = ({ type }: { type: "signup" | "signin" }) => {
 
             <LabelInput
                 label="Email"
+                inputType="text"
                 placeholder="nikhilachale@gmail.com"
                 onChange={(e) => setPostInputs(c => ({ ...c, email: e.target.value }))}
             />
 
             <LabelInput
                 label="Password"
+                inputType="Password"
                 placeholder="Enter your password"
                 onChange={(e) => setPostInputs(c => ({ ...c, password: e.target.value }))}
             />
@@ -71,17 +74,18 @@ export default Auth;
 interface LabelInputProps {
     label: string;
     placeholder: string;
+    inputType: string
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const LabelInput = ({ label, placeholder, onChange }: LabelInputProps) => {
+const LabelInput = ({ label, placeholder,inputType, onChange }: LabelInputProps) => {
     return (
         <div className="w-full max-w-md">
             <label className="block mb-2 text-sm font-bold text-gray-900 pt-2">
                 {label}
             </label>
             <input
-                type="text"
+                type={inputType}
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg block w-full p-2.5"
                 placeholder={placeholder}
                 onChange={onChange}
