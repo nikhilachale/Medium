@@ -39,11 +39,11 @@ userRouter.post('/signup', async (c) => {
       }
     });
 
-    const token = await  sign({ id: user.id }, c.env.JWT_SECRET);
-    console.log(token)
-    return c.json({ jwt: token,
-      data: user
-     });
+    const jwt = await sign({
+      id: user.id
+    }, c.env.JWT_SECRET);
+    // localStorage.setItem("token", jwt);
+    return c.text(jwt)
    
   } catch (e) {
     console.error('Error:', e);
