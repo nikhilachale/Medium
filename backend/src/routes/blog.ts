@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { sign, verify } from 'hono/jwt'
+import { verify } from 'hono/jwt'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import {blogInput ,updateblogInput} from "@nikhilachale/medium-blog"
@@ -120,32 +120,7 @@ blogRouter.put('/', async(c) => {
 
 });
 
-blogRouter.get('/:id',async (c) => {
-    const id = c.req.param("id");
-    console.log("Received ID:", id);
 
-    if (!id) {
-        c.status(400);
-        return c.json({ error: "Blog ID is required" });
-    }
-    const prisma = new PrismaClient({
-        datasourceUrl: c.env.DATABASE_URL,
-    }).$extends(withAccelerate());
-
-    const body = await c.req.json();
-    try {
-
-        const blog = await prisma.blog.findFirst({
-            where: { id },
-        });
-        return c.json({blog });
-    }
-    catch (e) {
-        console.error('Error:', e);
-        return c.json({ error: 'Internal Server Error' }, 500);
-    }
-
-});
 blogRouter.get('/bulk', async (c) => {
     const prisma = new PrismaClient({
         datasourceUrl: c.env.DATABASE_URL,
@@ -165,11 +140,41 @@ blogRouter.get('/bulk', async (c) => {
             },
         });
 
-        return c.json(blogs); // ✅ Return an array directly
+        return c.json(blogs);
     } catch (e) {
         console.error('Error:', e);
         return c.json({ error: 'Internal Server Error' }, 500);
     }
+});
+
+
+blogRouter.get('/:id',async (c) => {
+    const id = c.req.param("id");
+    console.log("Received ID:", id);
+
+    if (!id) {
+        c.status(400);
+        return c.json({ error: "Blog ID is required" });
+    }
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env.DATABASE_URL,
+    }).$extends(withAccelerate());
+
+    const body = await c.req.json();
+    try {
+
+        const blog = await prisma.blog.findFirst({
+            where: { 
+                id:Number(id)
+             },
+        })
+        return c.json({blog });
+    }
+    catch (e) {
+        console.error('Error:', e);
+        return c.json({ error: 'Internal Server Error' }, 500);
+    }
+
 });
 
 
